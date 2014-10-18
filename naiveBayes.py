@@ -8,10 +8,7 @@ import numpy as np
 from sklearn import metrics
 
 # the format of src log file
-[reqtime,fisrtid,userid,platform,host,geoip,region,city,browsegrp,browser, \
-    osgrp,os,adid,orderid,campaignid,strgyid,creatid,adunitid,width,height, \
-    location,viewtype,type,floorprice,bidprice,winprice,clkcnt,reachcnt,convcnt, \
-    usernew,agentprod,deviceos] = range(0, 32)
+# omit some informations
 
 class NaiveBayes:
     def __init__(self, trainFile):
@@ -82,26 +79,9 @@ class NaiveBayes:
            priorProb = 1.0 * self.totalInfo[pltf][1] / (self.totalInfo[pltf][1] + self.totalInfo[pltf][0])
            C0 = priorProb * self.M0
 
-           # domain  
-           f += math.log( (self.getPosNum(pltf,"domain",Domain) + C0) / ((self.getNegNum(pltf,"domain",Domain) + self.M0 - C0) * priorRatio) )
-           # region
-           f += math.log( (self.getPosNum(pltf,"region",Region) + C0) / ((self.getNegNum(pltf,"region",Region) + self.M0 - C0) * priorRatio) )
-           # city
-           f += math.log( (self.getPosNum(pltf,"city",City) + C0) / ((self.getNegNum(pltf,"city",City) + self.M0 - C0) * priorRatio) )
-           # browser
-           f += math.log( (self.getPosNum(pltf,"browser",Browser) + C0) / ((self.getNegNum(pltf,"browser",Browser) + self.M0 - C0) * priorRatio) )
-           # os 
-           f += math.log( (self.getPosNum(pltf,"os",Os) + C0) / ((self.getNegNum(pltf,"os",Os) + self.M0 - C0) * priorRatio) )
-           # creatid
-           f += math.log( (self.getPosNum(pltf,"creatid",Creatid) + C0) / ((self.getNegNum(pltf,"creatid",Creatid) + self.M0 - C0) * priorRatio) )
-           # size
-           f += math.log( (self.getPosNum(pltf,"size",Size) + C0) / ((self.getNegNum(pltf,"size",Size) + self.M0 - C0) * priorRatio) )
-
-           # location
-           f += math.log( (self.getPosNum(pltf,"location",Location) + C0) / ((self.getNegNum(pltf,"location",Location) + self.M0 - C0) * priorRatio) )
-
-           # adslotid
-           f += math.log( (self.getPosNum(pltf,"adslotid",AdslotId) + C0) / ((self.getNegNum(pltf,"adslotid",AdslotId) + self.M0 - C0) * priorRatio) )
+           # feature1  
+           f += math.log( (self.getPosNum(pltf,"feature1",Domain) + C0) / ((self.getNegNum(pltf,"feature1",Domain) + self.M0 - C0) * priorRatio) )
+           # ...
 
            posteriorRatio = priorRatio * math.exp(f)
            # posterior probability
